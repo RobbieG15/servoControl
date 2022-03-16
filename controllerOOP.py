@@ -141,12 +141,15 @@ class ManageServos():
         f.close()
 
     def getAll(self):
-        return [self.names, self.pins, self.lowerBounds, self.lowerBoundKeybinds, self.upperBounds, self.upperBoundKeybinds, self.stepSizes, self.lowerBounds]
+        currentPos = []
+        for i in self.names:
+            currentPos.append(0)
+        return [self.names, self.pins, self.lowerBounds, self.lowerBoundKeybinds, self.upperBounds, self.upperBoundKeybinds, self.stepSizes, currentPos]
 
 def continueQ():
     cont = ''
     while cont != 'y' or cont != 'n':
-        cont = input('Would you like to create a servo? (y/n)').lower()
+        cont = input('Would you like to create a servo? (y/n)\n').lower()
 
     return cont
     
@@ -160,11 +163,11 @@ def Controls(servos, event):
     for name in servos[0]:
         index = servos[0].index(name)
         if event.event_type == keyboard.KEY_DOWN and event.name == servos[3][index]:
-            if servos[7][index] >= servos[2][index]:
+            if servos[7][index] >= servos[2][index] - servos[6][index]:
                 servos[7][index] -= servos[6][index]
                 MoveServo(servos[1][index], servos[7][index])
         if event.event_type == keyboard.KEY_DOWN and event.name == servos[5][index]:
-            if servos[7][index] <= servos[4][index]:
+            if servos[7][index] <= servos[4][index] + servos[6][index]:
                 servos[7][index] += servos[6][index]
                 MoveServo(servos[1][index], servos[7][index])       
 
