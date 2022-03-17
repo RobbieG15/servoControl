@@ -18,4 +18,4 @@ The `staticSetServoController` is the first project I made to test out operating
 
 ## Contact
 
-Send an Email to `robbieg1515@gmail.com` regarding any additional controller requests or to report the occurence of bugs while using. I am aware that better input checking needs to be implemented in all of the code.
+Send an Email to `robbieg1515@gmail.com` regarding any additional controller requests or to report the occurence of bugs while using. I am aware that better input checking needs to be polished in all of the code.

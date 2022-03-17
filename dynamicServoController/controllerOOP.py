@@ -1,6 +1,8 @@
 from pyfirmata import Arduino, SERVO, util
 import keyboard
 
+keybinds = ['a','b', 'c', 'd', 'e','f', 'g', 'h','i','j', 'k', 'l','m','n', 'o', 'p', 'q','r', 's', 't','u','v', 'w', 'x','y','z']
+
 class ServoModule():
     def __init__(self):
         self.pin = ''
@@ -23,38 +25,53 @@ class ServoModule():
     def setLowerBound(self):
         while True:
             try:
-                self.lowerBound = int(input('What will your lower bound degrees be for the servo? Enter an integer.\n'))
-                break
+                self.lowerBound = int(input('What will your lower bound degrees be for the servo? Enter a positive integer.\n'))
+                if self.lowerBound < 0:
+                    print('Please select a lower bound greater than zero.')
+                    continue
+                else:
+                    break
             except:
                 print('Please enter integer value. Try again.')
     def setUpperBound(self):
         while True:
             try:
-                self.upperBound = int(input('What will your upper bound degrees be for the servo? Enter an integer.\n'))
-                break
+                self.upperBound = int(input('What will your lower bound degrees be for the servo? Enter a positive integer.\n'))
+                if self.upperBound <= self.lowerBound:
+                    print('Please select an upper bound greater than lower bound.')
+                    continue
+                else:
+                    break
             except:
-                print('Please enter integer value. Try again.')  
+                print('Please enter integer value. Try again.') 
     def setStepSize(self):
         while True:
             try:
-                self.stepSize = int(input('What will your step size be for the servo? Enter an integer.\n'))
-                break
+                self.stepSize = int(input('What will your step size be for the servo? Enter an integer between 1 and 10.\n'))
+                if self.stepSize >= 1 and self.stepSize <= 15:
+                    break
+                else:
+                    print('Please enter a number within the range 1 and 15')
+                    continue
             except:
                 print('Please enter integer value. Try again.') 
     def setLowerBoundKeybind(self):
         while True:
-            try:
-                self.lowerBoundKeybind = input('What will your lower bound keybind be for the servo? Enter a letter.\n')
+            self.lowerBoundKeybind = input('What will your upper bound keybind be for the servo? Enter a valid letter.\n')
+            if self.lowerBoundKeybind in keybinds:
                 break
-            except:
-                print('Please enter a valid key.')    
+            else:
+                print('Please enter a valid letter.')
+                continue   
     def setUpperBoundKeybind(self):
         while True:
-            try:
-                self.upperBoundKeybind = input('What will your upper bound keybind be for the servo? Enter a letter.\n')
+            self.upperBoundKeybind = input('What will your upper bound keybind be for the servo? Enter a valid letter.\n')
+            if self.upperBoundKeybind in keybinds:
                 break
-            except:
-                print('Please enter a valid key.')
+            else:
+                print('Please enter a valid letter.')
+                continue
+                
     def setName(self):
         while True:
             try:
@@ -172,7 +189,13 @@ def Controls(servos, event):
                 MoveServo(servos[1][index], servos[7][index])       
 
 def Main():
-    board = Arduino(GetPort())
+    while True:
+        try:
+            board = Arduino(GetPort())
+            print('Successfully Connected')
+            break
+        except:
+            print('Could not Connect. Try different port.')
     iter8 = util.Iterator(board)
     iter8.start()
     servoManager = ManageServos(board)
